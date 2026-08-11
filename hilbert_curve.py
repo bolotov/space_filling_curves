@@ -28,11 +28,11 @@ def point_from_distance(order: int, index: int) -> tuple[int, int]:
     to its (x, y) coordinates on 2D Cartesian plane.
 
     Parameters:
-      order: The order of the Hilbert curve.
-      index: The index of the point on the Hilbert curve.
+        order: The order of the Hilbert curve.
+        index: The index of the point on the Hilbert curve.
 
     Returns:
-      (x, y): The point in 2D space, as a pair of numbers.
+        (x, y): The point in 2D space, as a pair of numbers.
     """
     n = 2 ** order  # n here is a grid size (2^order).
     x, y = 0, 0
@@ -54,11 +54,11 @@ def distance_from_point(x: int, y: int, order: int) -> int:
     Reverse mapping for a 2^order x 2^order grid.
 
     Parameters:
-    - x, y: Coordinates on a 2D grid.
-    - order: Order of the Hilbert curve (n), where grid is 2^n x 2^n.
+        x, y: Coordinates on a 2D grid.
+        order: Order of the Hilbert curve (n), where grid is 2^n x 2^n.
 
     Returns:
-    - index: Position of the point along the Hilbert curve.
+        index: Position of the point along the Hilbert curve.
     """
     n = 2 ** order
     index = 0
@@ -76,10 +76,10 @@ def generate_hilbert_points(order: int) -> tuple[tuple[int, int], ...]:
     Generate all (x, y) points on the Hilbert curve for a given order.
 
     Parameters:
-    - order: Order of the Hilbert curve.
+        order: Order of the Hilbert curve.
 
     Returns:
-    - List of (x, y) coordinates corresponding to the Hilbert curve traversal.
+        List of (x, y) coordinates corresponding to the Hilbert curve traversal.
     """
     num_points = 2 ** (2 * order)
     return tuple(point_from_distance(order, i) for i in range(num_points))
@@ -91,10 +91,10 @@ def hilbert_curve_to_coordinates(
     Convert a 2D array/grid of Hilbert indices to a mapping: index → (x, y)
 
     Parameters:
-    - grid: tuple of tuples or list of lists containing Hilbert indices.
+        grid: tuple of tuples or list of lists containing Hilbert indices.
 
     Returns:
-    - dictionary: {index: (x, y)} for all positions in the grid.
+        dictionary: {index: (x, y)} for all positions in the grid.
     """
     return {
         val: (x, y) for x, row in enumerate(grid) for y, val in enumerate(row)
@@ -106,10 +106,10 @@ def hilbert_index_matrix(order: int) -> tuple[tuple[int, ...], ...]:
     Useful for visual debugging and confirming the curve's spatial layout.
 
     Parameters:
-    - order: The order of the Hilbert curve.
+        order: The order of the Hilbert curve.
 
     Returns:
-    - matrix: 2D list such that matrix[x][y] = hilbert index
+        matrix: 2D list such that matrix[x][y] = hilbert index
     """
     size = 2 ** order
     return tuple(
@@ -127,12 +127,12 @@ def _hilbert_rotate(
     Rotate and flip quadrant as needed during Hilbert index computation.
 
     Parameters:
-    - n: Grid size at this recursion level.
-    - x, y: Coordinates.
-    - rx, ry: Bit flags for quadrant rotation.
+        n: Grid size at this recursion level.
+        x, y: Coordinates.
+        rx, ry: Bit flags for quadrant rotation.
 
     Returns:
-    - (x, y): Transformed coordinates.
+        (x, y): Transformed coordinates.
     """
     if ry == 0:
         if rx == 1:
