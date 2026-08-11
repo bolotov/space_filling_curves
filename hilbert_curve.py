@@ -50,7 +50,8 @@ def point_from_distance(order: int, index: int) -> tuple[int, int]:
 
 def distance_from_point(x: int, y: int, order: int) -> int:
     """
-    Convert a 2D point (x, y) to a Hilbert curve index.
+    Calculates the Hilbert index for a given (x, y) coordinate.
+    Reverse mapping for a 2^order x 2^order grid.
 
     Parameters:
     - x, y: Coordinates on a 2D grid.
@@ -83,24 +84,26 @@ def generate_hilbert_points(order: int) -> tuple[tuple[int, int], ...]:
     num_points = 2 ** (2 * order)
     return tuple(point_from_distance(order, i) for i in range(num_points))
 
-def hilbert_curve_to_coordinates(grid: tuple[tuple[int]]) -> dict[int, tuple[int, int]]:
+def hilbert_curve_to_coordinates(
+        grid: tuple[tuple[int]]
+) -> dict[int, tuple[int, int]]:
     """
     Convert a 2D array/grid of Hilbert indices to a mapping: index → (x, y)
 
     Parameters:
-    - grid: Tuple of tuples or list of lists containing Hilbert indices.
+    - grid: tuple of tuples or list of lists containing Hilbert indices.
 
     Returns:
-    - Dictionary: {index: (x, y)} for all positions in the grid.
+    - dictionary: {index: (x, y)} for all positions in the grid.
     """
-    return {val: (x, y) for x, row in enumerate(grid) for y, val in enumerate(row)}
+    return {
+        val: (x, y) for x, row in enumerate(grid) for y, val in enumerate(row)
+    }
 
 def hilbert_index_matrix(order: int) -> tuple[tuple[int, ...], ...]:
     """
-    Returns a 2D matrix of shape (2^order x 2^order) where each cell
-    contains the Hilbert index corresponding to that (x, y) coordinate.
-
-    This is pedagogically useful for visualizing the curve layout.
+    Returns a 2D matrix (2^order x 2^order) populated with Hilbert indices.
+    Useful for visual debugging and confirming the curve's spatial layout.
 
     Parameters:
     - order: The order of the Hilbert curve.
@@ -139,27 +142,6 @@ def _hilbert_rotate(
     return x, y
 
 
-#### MARK: Convenience Functions
-
-def hilbert_index_to_point(order: int, index: int):
-    """Alias for `point_from_distance`."""
-    return point_from_distance(order, index)
-
-def point_to_hilbert_index(order: int, x: int, y: int):
-    """Alias for `distance_from_point`."""
-    return distance_from_point(x, y, order)
-
-def hilbert_position_at(x: int, y: int) -> int:
-    """
-    Test/educational function for 3rd-order Hilbert curve.
-    Return the Hilbert index at a specific (x, y) position in order-3 layout.
-
-    Returns:
-    - Index (int)
-    """
-    return HILBERT_3[x][y]
-
-
 ### MARK: Main for Testing and Visualization
 
 if __name__ == "__main__":
@@ -170,7 +152,7 @@ if __name__ == "__main__":
 
     print("\nVerify inverse mapping:")
     for i in range(64):
-        pt = hilbert_index_to_point(order, i)
+        pt = point_from_distance(order, i)
         idx = distance_from_point(*pt, order)
         assert idx == i, f"Mismatch: {i} -> {pt} -> {idx}"
 
